@@ -1,8 +1,18 @@
+const { log } = require("console");
 const posts = require("../data/posts");
 
 // Index
 const index = (req, res) => {
-    res.json(posts);
+    let postDaVisualizzare = posts;
+
+    const queryString = req.query;
+    if(queryString.tag !== undefined){
+        //faccio un filtro
+        const post = posts.filter((curPost) => curPost.tags.includes(queryString.tag));
+        res.json(post);
+    }else{
+        res.json(postDaVisualizzare);
+    } 
 }
 
 // Show
@@ -39,8 +49,19 @@ const modify = (req, res) => {
 
 // Destroy
 const destroy = (req, res) => {
-    const postID = req.params.id;
-    res.json("Elimino il post con id " + postID);
+    const postID = parseInt(req.params.id);
+    const indexElementoDaCancellare = posts.findIndex((curPost) => curPost.id === postID);
+    if(indexElementoDaCancellare !== -1){
+        posts.splice(indexElementoDaCancellare, 1);
+        console.log(posts);
+        res.sendStatus(204);
+    }else{
+        res.statusCode = 404;
+        res.json({
+            error : true,
+            messagge : 'Post non trovato'
+        })
+    }
 }
 
 module.exports = {
