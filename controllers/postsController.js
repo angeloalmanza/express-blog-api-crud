@@ -32,6 +32,7 @@ const show = (req, res) => {
 
 // Create
 const create =  (req, res) => {
+    console.log(req.body);
     res.json("Aggiungo un nuovo post ai miei dati");
 }
 
