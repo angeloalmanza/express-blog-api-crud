@@ -43,8 +43,23 @@ const create =  (req, res) => {
 
 // Update
 const update = (req, res) => {
-    const postID = req.params.id;
-    res.json("Aggiorno tutti i dati di un post con id " + postID);
+    const postID = parseInt(req.params.id);
+    const postToUpdate = req.body;
+    // Indice elemento da modificare
+    const indexToUpdate = posts.findIndex(curPost => curPost.id === postID);
+    // Aggiorno la chiave id dell'elemento da aggiornare
+    postToUpdate.id = postID;
+    
+    if(indexToUpdate === -1){
+        res.statusCode = 404;
+        res.json({
+            error : true,
+            messagge : "elemento non trovato"
+        })
+    }else{
+        posts[indexToUpdate] = postToUpdate;
+        res.json(postToUpdate);
+    }
 }
 
 // Modify
