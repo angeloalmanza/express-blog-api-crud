@@ -32,8 +32,13 @@ const show = (req, res) => {
 
 // Create
 const create =  (req, res) => {
-    console.log(req.body);
-    res.json("Aggiungo un nuovo post ai miei dati");
+    const newPost = req.body;
+
+    newPost.id = posts[posts.length - 1].id + 1;
+    posts.push(newPost);
+
+    res.statusCode = 201;
+    res.json(newPost);
 }
 
 // Update
