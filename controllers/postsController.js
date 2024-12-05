@@ -64,8 +64,28 @@ const update = (req, res) => {
 
 // Modify
 const modify = (req, res) => {
-    const postID = req.params.id;
-    res.json("Aggiorno solo alcuni elementi di un post con id " + postID);
+    const postID = parseInt(req.params.id);
+    const postToModify = req.body;
+    
+    const post = posts.find(curPost => curPost.id === postID);
+
+    if(post){
+        if(postToModify.title !== undefined) post.title = postToModify.title;
+        if(postToModify.content !== undefined) post.content = postToModify.content;
+        if(postToModify.image !== undefined) post.image = postToModify.image;
+        if(postToModify.tags !== undefined) post.tags = postToModify.tags;
+
+        res.json({
+            post,
+            messagge : "Post modificato con successo"
+        })
+    }else{
+        res.statusCode = 404;
+        res.json({
+            error : true,
+            messagge : "Post non trovato"
+        })
+    }
 }
 
 // Destroy
