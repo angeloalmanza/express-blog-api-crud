@@ -19,15 +19,7 @@ const index = (req, res) => {
 const show = (req, res) => {
     const postID = parseInt(req.params.id);
     const post = posts.find(p => p.id === postID);
-    if(post){
-        res.json(post);
-    }else{
-        res.statusCode = 404;
-        res.json({
-            error : true,
-            messagge : 'post non trovato'
-        })
-    }
+    res.json(post);
 }
 
 // Create
@@ -50,16 +42,8 @@ const update = (req, res) => {
     // Aggiorno la chiave id dell'elemento da aggiornare
     postToUpdate.id = postID;
     
-    if(indexToUpdate === -1){
-        res.statusCode = 404;
-        res.json({
-            error : true,
-            messagge : "elemento non trovato"
-        })
-    }else{
-        posts[indexToUpdate] = postToUpdate;
-        res.json(postToUpdate);
-    }
+    posts[indexToUpdate] = postToUpdate;
+    res.json(postToUpdate);
 }
 
 // Modify
@@ -69,40 +53,25 @@ const modify = (req, res) => {
     
     const post = posts.find(curPost => curPost.id === postID);
 
-    if(post){
-        if(postToModify.title !== undefined) post.title = postToModify.title;
-        if(postToModify.content !== undefined) post.content = postToModify.content;
-        if(postToModify.image !== undefined) post.image = postToModify.image;
-        if(postToModify.tags !== undefined) post.tags = postToModify.tags;
+    if(postToModify.title !== undefined) post.title = postToModify.title;
+    if(postToModify.content !== undefined) post.content = postToModify.content;
+    if(postToModify.image !== undefined) post.image = postToModify.image;
+    if(postToModify.tags !== undefined) post.tags = postToModify.tags;
 
-        res.json({
-            post,
-            messagge : "Post modificato con successo"
-        })
-    }else{
-        res.statusCode = 404;
-        res.json({
-            error : true,
-            messagge : "Post non trovato"
-        })
-    }
+    res.json({
+        post,
+        messagge : "Post modificato con successo"
+    })
 }
 
 // Destroy
 const destroy = (req, res) => {
     const postID = parseInt(req.params.id);
     const indexElementoDaCancellare = posts.findIndex((curPost) => curPost.id === postID);
-    if(indexElementoDaCancellare !== -1){
-        posts.splice(indexElementoDaCancellare, 1);
-        console.log(posts);
-        res.sendStatus(204);
-    }else{
-        res.statusCode = 404;
-        res.json({
-            error : true,
-            messagge : 'Post non trovato'
-        })
-    }
+    
+    posts.splice(indexElementoDaCancellare, 1);
+    console.log(posts);
+    res.sendStatus(204);
 }
 
 module.exports = {
