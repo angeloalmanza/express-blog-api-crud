@@ -6,9 +6,9 @@ const index = (req, res) => {
     let postDaVisualizzare = posts;
 
     const queryString = req.query;
-    if(queryString.tag !== undefined){
+    if(queryString.tags !== undefined){
         //faccio un filtro
-        const post = posts.filter((curPost) => curPost.tags.includes(queryString.tag));
+        const post = posts.filter((curPost) => curPost.tags.includes(queryString.tags));
         res.json(post);
     }else{
         res.json(postDaVisualizzare);
